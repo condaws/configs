@@ -59,6 +59,13 @@ lsp['sumneko_lua'].setup{
     flags = lsp_flags,
 }
 
+lsp['powershell_es'].setup{
+    on_attach = on_attach,
+    bundle_path = vim.fn.stdpath("data") .. "/mason/packages/powershell-editor-services/",
+    capabilities = capabilities,
+    flags = lsp_flags,
+}
+
 -- Diagnostics
 vim.diagnostic.config({
     virtual_text = false,
