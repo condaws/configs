@@ -1,4 +1,3 @@
--- Mason 
 require("mason").setup({
     ui = {
         icons = {
@@ -51,20 +50,36 @@ lsp['tsserver'].setup{
     on_attach = on_attach,
     capabilities = capabilities,
     flags = lsp_flags,
+    settings = {
+        completions = {
+            completeFunctionCalls = true
+        }
+    }
 }
 
-lsp['sumneko_lua'].setup{
-    on_attach = on_attach,
-    capabilities = capabilities,
-    flags = lsp_flags,
+lsp['lua_ls'].setup {
+    settings = {
+        Lua = {
+            runtime = {
+                version = 'LuaJIT',
+            },
+            diagnostics = {
+                globals = {'vim'},
+            },
+            workspace = {
+                library = vim.api.nvim_get_runtime_file("", true),
+            },
+            telemetry = {
+                enable = false,
+            },
+        },
+    },
 }
 
-lsp['powershell_es'].setup{
-    on_attach = on_attach,
-    bundle_path = vim.fn.stdpath("data") .. "/mason/packages/powershell-editor-services/",
-    capabilities = capabilities,
-    flags = lsp_flags,
-}
+-- lsp['emmet_ls'].setup {
+--     capabilities = capabilities,
+--     filetypes = { "html", "typescriptreact", "javascriptreact", "css", "javascript", "typescript"}
+-- }
 
 -- Diagnostics
 vim.diagnostic.config({

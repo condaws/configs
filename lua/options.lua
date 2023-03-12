@@ -9,15 +9,16 @@ vim.opt.scrolloff = 8
 vim.o.pumheight = 7
 vim.opt.cino:append{L0}
 vim.opt.smartindent = false
-vim.opt.autoindent = false
+vim.opt.autoindent = true
 vim.opt.signcolumn = 'no'
 vim.opt.completeopt = {'menu','menuone','noinsert'}
+vim.opt.mouse = ""
 
 local disabled_built_ins = {
-    "netrw",
-    "netrwPlugin",
-    "netrwSettings",
-    "netrwFileHandlers",
+    -- "netrw",
+    -- "netrwPlugin",
+    -- "netrwSettings",
+    -- "netrwFileHandlers",
     "gzip",
     "zip",
     "zipPlugin",
@@ -33,6 +34,9 @@ local disabled_built_ins = {
     "spellfile_plugin",
     "matchit"
 }
+
+vim.g.netrw_banner = "off"
+vim.g.netrw_liststyle = 3
 
 for _, plugin in pairs(disabled_built_ins) do
     vim.g["loaded_" .. plugin] = 1

@@ -1,47 +1,106 @@
-vim.cmd [[packadd packer.nvim]]
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 
-return require('packer').startup(function()
-	use { 'wbthomason/packer.nvim' }
-    use { 'nvim-lualine/lualine.nvim' }
-    use { "folke/tokyonight.nvim" }
-    use { "windwp/nvim-autopairs" }
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    'git',
+    'clone',
+    '--filter=blob:none',
+    'https://github.com/folke/lazy.nvim.git',
+    '--branch=stable', -- latest stable release
+    lazypath,
+  })
+end
 
-    use {
+vim.opt.rtp:prepend(lazypath)
+
+local plugins = {
+    {
+        'nvim-lualine/lualine.nvim',
+        config = function ()
+            require('plugins.lualine')
+        end
+    },
+
+    {
+        'folke/tokyonight.nvim',
+        lazy = false,
+        priority = 1000,
+        config = function ()
+            require('plugins.tokyonight')
+        end
+    },
+
+    {
         'nvim-treesitter/nvim-treesitter',
-        run = ':TSUpdate'
-    }
+        build = ':TSUpdate',
+        config = function ()
+            require('plugins.treesitter')
+        end,
+        dependencies = {
+            {
+                'windwp/nvim-ts-autotag',
+                config = function ()
+                    require('plugins.autotag')
+                end
+            }
+        }
+    },
 
     -- Telescope
-    use {
+    {
         'nvim-telescope/telescope.nvim',
-        tag = '0.1.0',
-        requires = {
-            {'nvim-lua/plenary.nvim'},
-        }
-    }
+        tag = '0.1.1',
+        dependencies = {
+            'nvim-lua/plenary.nvim'
+        },
+        config = function ()
+            require('plugins.telescope')
+        end
+    },
 
-    use {
+    {
         'nvim-telescope/telescope-fzf-native.nvim',
-        run = 'make'
-    }
+        build = 'make'
+    },
 
-    use {
-        -- LSP 
-        {'williamboman/mason.nvim'},
-        {'williamboman/mason-lspconfig.nvim'},
-        {'neovim/nvim-lspconfig'},
+    -- LSP 
+    {'williamboman/mason.nvim'},
+    {'williamboman/mason-lspconfig.nvim'},
+    {
+        'neovim/nvim-lspconfig',
+    	config = function ()
+    	    require('plugins.lsp')
+    	end
+    },
 
-        -- Autocompletion
-        {'hrsh7th/nvim-cmp'},
-        {'hrsh7th/cmp-buffer'},
-        {'hrsh7th/cmp-path'},
-        {'saadparwaiz1/cmp_luasnip'},
-        {'hrsh7th/cmp-nvim-lsp'},
-        {'hrsh7th/cmp-nvim-lua'},
+    -- Autocompletion
+    {
+        'windwp/nvim-autopairs',
+        dependencies = {
+            'hrsh7th/nvim-cmp',
+            -- event = 'InsertEnter',
+            dependencies = {
+                {'hrsh7th/cmp-buffer'},
+                {'hrsh7th/cmp-path'},
+                {'saadparwaiz1/cmp_luasnip'},
+                {'hrsh7th/cmp-nvim-lsp'},
+                {'hrsh7th/cmp-nvim-lua'},
+            },
+            config = function ()
+                require('plugins.cmp')
+            end
+        },
+        config = function ()
+            require('plugins.autopairs')
+        end
+    },
 
-        -- Snippets
-        {'L3MON4D3/LuaSnip'},
-        {'rafamadriz/friendly-snippets'},
-    }
-end)
+    -- Snippets
+    {'L3MON4D3/LuaSnip'},
+    {'rafamadriz/friendly-snippets'},
+}
+
+local opts = {}
+
+require('lazy').setup(plugins, opts)
 

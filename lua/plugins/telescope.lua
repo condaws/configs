@@ -44,9 +44,10 @@ telescope.load_extension('fzf')
 
 local builtin = require("telescope.builtin")
 vim.keymap.set('n', '<leader>tf', builtin.find_files, {})
+vim.keymap.set('n', '<leader>tb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>tg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>twd', builtin.diagnostics, {})
 vim.keymap.set('n', '<leader>td', function()
     builtin.diagnostics({ bufnr = 0 })
 end)
-
+vim.keymap.set('n', '<leader>tlr', builtin.lsp_references, {})
