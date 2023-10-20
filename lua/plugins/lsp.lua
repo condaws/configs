@@ -40,12 +40,26 @@ local lsp_flags = {
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local lsp = require('lspconfig')
 
+
+-- Terraform
+lsp['terraformls'].setup{
+    on_attach = on_attach,
+    capabilities = capabilities,
+    flags = lsp_flags,
+    settings = {
+        filetypes = { "tf" }
+    }
+}
+
+-- Python
 lsp['pyright'].setup{
     on_attach = on_attach,
     capabilities = capabilities,
     flags = lsp_flags,
 }
 
+
+-- TypeScript
 lsp['tsserver'].setup{
     on_attach = on_attach,
     capabilities = capabilities,
@@ -57,6 +71,15 @@ lsp['tsserver'].setup{
     }
 }
 
+-- C++
+lsp['clangd'].setup{
+    on_attach = on_attach,
+    capabilities = capabilities,
+    flags = lsp_flags,
+    cmd = {"clangd-14"}
+}
+
+-- lua
 lsp['lua_ls'].setup {
     settings = {
         Lua = {
@@ -76,10 +99,6 @@ lsp['lua_ls'].setup {
     },
 }
 
--- lsp['emmet_ls'].setup {
---     capabilities = capabilities,
---     filetypes = { "html", "typescriptreact", "javascriptreact", "css", "javascript", "typescript"}
--- }
 
 -- Diagnostics
 vim.diagnostic.config({

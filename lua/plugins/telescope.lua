@@ -11,7 +11,8 @@ telescope.setup{
         -- e.g. git_{create, delete, ...}_branch for the git_branches picker
         ["<C-h>"] = "which_key"
       }
-    }
+    },
+    file_ignore_patterns = {"node_modules", "*.o"}
   },
   pickers = {
     -- Default configuration for builtin pickers goes here:
@@ -47,7 +48,9 @@ vim.keymap.set('n', '<leader>tf', builtin.find_files, {})
 vim.keymap.set('n', '<leader>tb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>tg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>twd', builtin.diagnostics, {})
+vim.keymap.set('n', '<leader>tr', builtin.lsp_references, {})
+vim.keymap.set('n', '<leader>tgc', builtin.git_commits, {})
 vim.keymap.set('n', '<leader>td', function()
     builtin.diagnostics({ bufnr = 0 })
 end)
-vim.keymap.set('n', '<leader>tlr', builtin.lsp_references, {})
+

@@ -7,8 +7,8 @@ vim.opt.expandtab = true
 vim.opt.shortmess:append{c = true}
 vim.opt.scrolloff = 8
 vim.o.pumheight = 7
-vim.opt.cino:append{L0}
-vim.opt.smartindent = false
+vim.opt.cinoptions = 'L0'
+vim.opt.smartindent = true
 vim.opt.autoindent = true
 vim.opt.signcolumn = 'no'
 vim.opt.completeopt = {'menu','menuone','noinsert'}
