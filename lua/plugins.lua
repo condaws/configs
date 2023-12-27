@@ -49,7 +49,7 @@ local plugins = {
     -- Telescope
     {
         'nvim-telescope/telescope.nvim',
-        tag = '0.1.2',
+        tag = '0.1.4',
         dependencies = {
             'nvim-lua/plenary.nvim'
         },
@@ -61,6 +61,14 @@ local plugins = {
     {
         'nvim-telescope/telescope-fzf-native.nvim',
         build = 'make'
+    },
+
+    {
+        'nvim-telescope/telescope-file-browser.nvim',
+        dependencies = {
+            'nvim-telescope/telescope.nvim',
+            'nvim-lua/plenary.nvim'
+        }
     },
 
     -- LSP 
@@ -96,8 +104,12 @@ local plugins = {
     },
 
     -- Snippets
-    {'L3MON4D3/LuaSnip'},
+    {
+        'L3MON4D3/LuaSnip',
+        build = 'make install_jsregexp'
+    },
     {'rafamadriz/friendly-snippets'},
+    {'mfussenegger/nvim-jdtls'}
 }
 
 local opts = {}

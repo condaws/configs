@@ -11,6 +11,36 @@ require("mason").setup({
 --Mason-lspconfig
 require("mason-lspconfig").setup()
 
+
+-- Override floats globally
+local border = {
+      {"╭", "FloatBorder"},
+
+      {"─", "FloatBorder"},
+
+      {"╮", "FloatBorder"},
+
+      {"│", "FloatBorder"},
+
+      {"╯", "FloatBorder"},
+
+      {"─", "FloatBorder"},
+
+      {"╰", "FloatBorder"},
+
+      {"│", "FloatBorder"},
+}
+
+local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+
+function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+  opts = opts or {}
+  opts.max_height = 20
+  opts.max_width = 80
+  opts.border = opts.border or border
+  return orig_util_open_floating_preview(contents, syntax, opts, ...)
+end
+
 -- LSP
 local on_attach = function(client, bufnr)
   local bufopts = { noremap=true, silent=true, buffer=bufnr }
@@ -56,6 +86,28 @@ lsp['pyright'].setup{
     on_attach = on_attach,
     capabilities = capabilities,
     flags = lsp_flags,
+}
+
+-- Java
+-- lsp['jdtls'].setup{
+--     on_attach = on_attach,
+--     capabilities = capabilities,
+--     flags = lsp_flags,
+-- }
+
+-- yaml
+lsp['yamlls'].setup{
+    on_attach = on_attach,
+    capabilities = capabilities,
+    flags = lsp_flags,
+    settings = {
+      yaml = {
+        schemaStore = {
+          url = "https://www.schemastore.org/api/json/catalog.json",
+          enable = true,
+        }
+      }
+    }
 }
 
 

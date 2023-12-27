@@ -7,7 +7,9 @@ require('nvim-treesitter.configs').setup {
         enable = true,
         disable = {
             'python',
-            'cpp'
+            'cpp',
+            'typescript',
+            'yaml'
         }
     },
     autotag = {

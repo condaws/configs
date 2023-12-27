@@ -4,6 +4,23 @@ telescope.setup{
   defaults = {
     -- Default configuration for telescope goes here:
     -- config_key = value,
+        --
+    file_ignore_patterns = {
+        "^node_modules/",
+        "%.o",
+    },
+
+    wrap_results = true,
+    path_display = {
+        "smart"
+    },
+
+    sorting_strategy = "ascending",
+    layout_config = {
+      horizontal = {
+        prompt_position = "top"
+      }
+    },
     mappings = {
       i = {
         -- map actions.which_key to <C-h> (default: <C-/>)
@@ -12,7 +29,6 @@ telescope.setup{
         ["<C-h>"] = "which_key"
       }
     },
-    file_ignore_patterns = {"node_modules", "*.o"}
   },
   pickers = {
     -- Default configuration for builtin pickers goes here:
@@ -36,12 +52,17 @@ telescope.setup{
       override_file_sorter = true,     -- override the file sorter
       case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
                                        -- the default case_mode is "smart_case"
+    },
+
+    file_browser = {
+      hijack_netrw = true,
     }
   }
 }
 
 -- This will load fzf_native and have it override the default file sorter
 telescope.load_extension('fzf')
+telescope.load_extension('file_browser')
 
 local builtin = require("telescope.builtin")
 vim.keymap.set('n', '<leader>tf', builtin.find_files, {})
@@ -50,6 +71,7 @@ vim.keymap.set('n', '<leader>tg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>twd', builtin.diagnostics, {})
 vim.keymap.set('n', '<leader>tr', builtin.lsp_references, {})
 vim.keymap.set('n', '<leader>tgc', builtin.git_commits, {})
+vim.keymap.set('n', '<leader>te', ':Telescope file_browser path=%:p:h select_buffer=true<CR>', {silent=true})
 vim.keymap.set('n', '<leader>td', function()
     builtin.diagnostics({ bufnr = 0 })
 end)

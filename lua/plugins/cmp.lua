@@ -65,16 +65,36 @@ cmp.setup({
         }
     },
 
+    performance = {
+        max_view_entries = 10
+    },
+
     window = {
-        completion = {
-            side_padding = 1
-        }
+        completion = cmp.config.window.bordered {
+            side_padding = 1,
+            winhighlight = 'Normal:CmpDocumentation,CursorLine:PmenuSel,Search:None,FloatBorder:CmpDocumentationBorder'
+        },
+        documentation = cmp.config.window.bordered {
+            border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+            winhighlight = 'Normal:CmpDocumentation,CursorLine:CmpDocPmenuSel,Search:None,FloatBorder:CmpDocumentationBorder',
+        },
     },
 
     formatting = {
         format = function(entry, vim_item)
             vim_item.kind = string.format("%s %s ", kind_icons[vim_item.kind], vim_item.kind)
-            vim_item.abbr = string.sub(vim_item.abbr, 1, 30)
+            vim_item.menu = ""
+            
+            local label = vim_item.abbr
+            local truncated_label = vim.fn.strcharpart(label, 0, 30)
+
+            if truncated_label ~= label then
+              vim_item.abbr = truncated_label .. '...'
+            elseif string.len(label) < 30 then
+              local padding = string.rep(' ', 30 - string.len(label))
+              vim_item.abbr = label .. padding
+            end
+
             return vim_item
         end
     },
@@ -118,10 +138,20 @@ cmp.setup({
     }),
     
     sources = cmp.config.sources({
-        { name = "buffer", keyword_length = 4 },
-        { name = "nvim_lsp" },
-        { name = "luasnip" },
-        { name = "path" },
+        {
+            name = "buffer",
+            keyword_length = 4
+        },
+        {
+            name = "nvim_lsp"
+        },
+        {
+            name = "luasnip",
+            max_item_count = 3
+        },
+        {
+            name = "path"
+        },
     })
 })
 
